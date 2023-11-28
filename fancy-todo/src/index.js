@@ -1,5 +1,5 @@
 const app = require('./app');
-const prisma = require('./prisma/client')
+const prisma = require('../prisma/client')
 
 let server;
 let port = 3000

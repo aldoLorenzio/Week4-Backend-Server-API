@@ -20,6 +20,7 @@ model Todo{
     title       String
     description String
     status      String
+    dueDate     DateTime @default(now())
     userId      String
     user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
