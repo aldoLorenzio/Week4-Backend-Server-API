@@ -14,7 +14,7 @@ const createUser = async (userBody) => {
 
 const getUserByEmail = async (email) => {
   return prisma.user.findUnique({
-    where: { email },
+    where: {email: email },
   });
 };
 
@@ -44,14 +44,10 @@ const updateUserById = async (userId, userBody) => {
   return updateUser;
 }
 
-const deleteUserById = async (userId) => {
-  const deleteUser = await prisma.user.delete({
-      where: {
-          id: userId
-      },
+const deleteUserById = async(userId) =>{
+  return prisma.user.delete({
+    where: {id: userId}
   })
-
-  return deleteUser
 }
 
 const queryProductByUser = async (userId) =>{
@@ -59,6 +55,8 @@ const queryProductByUser = async (userId) =>{
     where: {id : userId},
     include: {products: true}
   })
+
+  return queryProduct
 }
 
 const queryOrderByUser = async (userId) => {
@@ -66,6 +64,8 @@ const queryOrderByUser = async (userId) => {
     where:{id: userId},
     include: {orders: true}
   })
+
+  return queryOrder
 }
 
 module.exports = {

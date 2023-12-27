@@ -1,20 +1,20 @@
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { orderitemService } = require('../services');
+const { orderItemService } = require('../services');
 
 const createOrderItem = catchAsync(async (req, res) => {
-  const orderitem = await orderitemService.createOrderItem(req.body);
+  const orderItem = await orderItemService.createOrderItem(req.body);
 
   res.status(httpStatus.CREATED).send({
     status: httpStatus.CREATED,
     message: "Create OrderItem Success",
-    data: orderitem
+    data: orderItem
   });
 });
 
 const getOrderItems = catchAsync(async (req, res) => {
-  const result = await orderitemService.queryOrderItems();
+  const result = await orderItemService.queryOrderItems();
   
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,
@@ -24,31 +24,31 @@ const getOrderItems = catchAsync(async (req, res) => {
 });
 
 const getOrderItem = catchAsync(async (req, res) => {
-  const orderitem = await orderitemService.getOrderItemById(req.params.orderitemId);
-  if (!orderitem) {
+  const orderItem = await orderItemService.getOrderItemById(req.params.orderItemId);
+  if (!orderItem) {
     throw new ApiError(httpStatus.NOT_FOUND, 'OrderItem not found');
   }
   
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,
     message: "Get OrderItem Success",
-    data: orderitem
+    data: orderItem
   });
 });
 
 
 const updateOrderItem = catchAsync(async (req, res) => {
-  const orderitem = await orderitemService.updateOrderItemById(req.params.orderitemId, req.body);
+  const orderItem = await orderItemService.updateOrderItemById(req.params.orderItemId, req.body);
   
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,
     message: "Update OrderItem Success",
-    data: orderitem
+    data: orderItem
   });
 });
 
 const deleteOrderItem = catchAsync(async (req, res) => {
-  await orderitemService.deleteOrderItemById(req.params.orderitemId);
+  await orderItemService.deleteOrderItemById(req.params.orderItemId);
   
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,

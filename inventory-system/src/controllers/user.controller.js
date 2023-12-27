@@ -15,7 +15,7 @@ const getUsers = catchAsync(async (req, res) => {
 
 
 const getUserById = catchAsync(async (req,res) =>{
-  const result = await userService.getUserById(req.params.id)
+  const result = await userService.getUserById(req.params.userId)
 
   if(!result){
     throw new ApiError(httpStatus.NOT_FOUND, 'User ID not found')
@@ -42,43 +42,34 @@ const getUserByEmail = catchAsync(async (req,res) =>{
   })
 })
 
-// const createUser = catchAsync(async (req,res) => {
-//   const result = await userService.createUser(req.body);
-
-//   res.status(httpStatus.CREATED).json({
-//     status: httpStatus.CREATED,
-//     message: 'Create User Success',
-//     data: result
-//   })
-// })
-
 const updateUser = catchAsync(async (req,res) =>{
-  const userExist = await userService.getUserById(req.params.id)
+  const userExist = await userService.getUserById(req.params.userId)
   if(!userExist) throw new ApiError(httpStatus.NOT_FOUND, 'User not found')
 
-  const result = await userService.updateUserById(req.params.id, req.body);
+  const result = await userService.updateUserById(req.params.userId, req.userBody);
 
   res.status(httpStatus.OK).json({
     status: httpStatus.OK,
     message: 'Update User Success',
     data: result
   })
-})
+}) 
 
 const deleteUser = catchAsync(async (req, res) => {
-  const userExist = await userService.getUserById(req.params.id)
+  const userExist = await userService.getUserById(req.params.userId)
   if(!userExist) throw new ApiError(httpStatus.NOT_FOUND, 'User Id not Found')
 
-  await userService.deleteUserById(req.params.id);
+  await userService.deleteUserById(req.params.userId);
 
   res.status(httpStatus.OK).json({
       status: httpStatus.OK,
       message: "Delete User Success",
+      data:null
   });
 })
 
 const queryProductByUser = catchAsync(async (req,res) => {
-  const product = await userService.queryProductByUser(req.params.id)
+  const product = await userService.queryProductByUser(req.params.userId)
   if(!product) throw new ApiError(httpStatus.NOT_FOUND, 'Product not Found')
 
   res.status(httpStatus.OK).json({
@@ -89,7 +80,7 @@ const queryProductByUser = catchAsync(async (req,res) => {
 })
 
 const queryOrderByUser = catchAsync(async (req,res) => {
-  const order = await userService.queryorderByUser(req.params.id)
+  const order = await userService.queryorderByUser(req.params.userId)
   if(!order) throw new ApiError(httpStatus.NOT_FOUND, 'Order not Found')
 
   res.status(httpStatus.OK).json({

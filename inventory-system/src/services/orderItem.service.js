@@ -3,7 +3,8 @@ const prisma = require('../../prisma/client')
 const ApiError = require('../utils/ApiError');
 
 const createOrderItem = async (orderItemBody) => {
-  const order = await prisma.product.findUnique({
+  // Get data orderId and productId
+  const order = await prisma.order.findUnique({
     where:{
       id: orderItemBody.orderId
     }
@@ -15,19 +16,25 @@ const createOrderItem = async (orderItemBody) => {
     }
   })
 
+  //Validation error
+  if(!order) throw new ApiError(httpStatus.NOT_FOUND, 'Order ID not found');
+  if(!product) throw new ApiError(httpStatus.NOT_FOUND, 'Product ID not found');
+  if(orderItemBody.quantity > product.quantityInStock) throw new ApiError (httpStatus.BAD_REQUEST, `Order quantity exceed product stock. Current product stock is ${product.quantityInStock}`);
 
-  if(!order) throw new ApiError(httpStatus.NOT_FOUND, 'Order ID not found')
-  if(!product) throw new ApiError(httpStatus.NOT_FOUND, 'Product ID not found')
-  if(orderItemBody.quantity > product.quantityInStock) throw new ApiError (httpStatus.BAD_REQUEST, `Order quantity exceed product stock. Current product stock is ${product.quantityInStock}`)
-
+  //Update quantity product and Total price in order
   await prisma.product.update({
     where:{
       id: product.id
     },
-    data: product.quantityInStock - orderItemBody.quantity
-  })
-  
+    data: {quantityInStock: product.quantityInStock - orderItemBody.quantity}
+  });
 
+  await prisma.order.update({
+    where:{id: order.id},
+    data: {totalPrice: orderItemBody.quantity * orderItemBody.unitPrice}
+  })
+
+  //Create orderItem
   return prisma.orderItem.create({
     data: orderItemBody
   });

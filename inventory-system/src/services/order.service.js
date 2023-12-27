@@ -3,17 +3,16 @@ const prisma = require('../../prisma/client')
 const ApiError = require('../utils/ApiError');
 
 const createOrder = async (orderBody) => {
+  const orderUserId = await prisma.user.findUnique({
+    where: {id: orderBody.userId}
+  });
+
+  if(!orderUserId) throw new ApiError(httpStatus.NOT_FOUND, 'User Id not found')
+
   return prisma.order.create({
     data: orderBody
   })
 }
-
-// const createOrder = async (orderBody) => {
-//   return prisma.order.create({
-//     data: orderBody
-//   });
-// };
-
 
 const queryOrders = async (filter, options) => {
   const orders = await prisma.order.findMany();
@@ -29,6 +28,11 @@ const getOrderById = async (id) => {
 };
 
 const updateOrderById = async (orderId, updateBody) => {
+  const orderUserId = await prisma.user.findUnique({
+    where: {id: orderBody.userId}
+  });
+
+  if(!orderUserId) throw new ApiError(httpStatus.NOT_FOUND, 'User Id not found')
   const order = await getOrderById(orderId);
   if (!order) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Order Id not found');

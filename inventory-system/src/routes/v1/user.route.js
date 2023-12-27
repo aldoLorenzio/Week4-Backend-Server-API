@@ -7,15 +7,22 @@ const userValidation = require('../../validations/user.validation')
 const router = express.Router();
 
 router
-    .get('/users', userController.getUsers)
-    .get('/user', userController.getUserByEmail);
+    .route('/')
+    .get(auth() ,userController.getUsers);
 
+//route for req query email
 router
-    .route('/:id')
+    .route('/user')
+    .get(auth(), validate(userValidation.getUserByEmail), userController.getUserByEmail);
+    
+    router
+    .route('/:userId')
     .get(auth(),validate(userValidation.getUser), userController.getUserById)
-    .put(auth(), validate(userValidation.updateUser),userController.updateUser)
+    .patch(auth(), validate(userValidation.updateUser),userController.updateUser)
     .delete(auth(), validate(userValidation.deleteUser), userController.deleteUser)
     .get(auth(), validate(userValidation.getUser), userController.queryProductByUser)
-    .get(auth(), validate(userValidation.getUser), userController.queryOrderByUser)
-
-module.exports = router;
+    .get(auth(), validate(userValidation.getUser), userController.queryOrderByUser);
+    
+        
+    module.exports = router;
+    

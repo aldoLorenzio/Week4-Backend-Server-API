@@ -22,9 +22,9 @@ const updateOrder = {
   }),
   body: Joi.object()
     .keys({
-        date: Joi.date().required(),
-        customerName: Joi.string().required(),
-        customerEmail: Joi.number().required(),
+        date: Joi.date(),
+        customerName: Joi.string(),
+        customerEmail: Joi.number(),
     })
     .min(1),
 };
