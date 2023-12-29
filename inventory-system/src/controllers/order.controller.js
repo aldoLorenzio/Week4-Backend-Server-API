@@ -14,7 +14,12 @@ const createOrder = catchAsync(async (req, res) => {
 });
 
 const getOrders = catchAsync(async (req, res) => {
-  const result = await orderService.queryOrders();
+  const filter = {name: req.query.name};
+  const options = {
+    take: req.query.take,
+    skip: req.query.skip }
+
+  const result = await orderService.queryOrders(filter,options);
   
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,

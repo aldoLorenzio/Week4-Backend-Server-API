@@ -10,7 +10,23 @@ const createCategory = async (categoryBody) => {
 
 
 const queryCategorys = async (filter, options) => {
-  const categorys = await prisma.category.findMany();
+  const {category} = filter;
+  const {take, skip} = options;
+
+  const categorys = await prisma.category.findMany({
+    where:{
+      name:{
+        contains: category
+      }},
+      include:{
+        products: true
+      },
+      take: take && parseInt(take),
+      skip: skip && parseInt (skip),
+    orderBy:{
+      name: 'asc'
+    }
+  });
   return categorys;
 };
 
@@ -53,10 +69,22 @@ const deleteCategoryById = async (categoryId) => {
   return deleteCategorys;
 };
 
+const queryProductByCategory = async(filter,options) =>{
+  
+  const {take,skip} = options
+
+  return prisma.category.findMany({
+    
+    take: take && parseInt(take),
+    skip: skip && parseInt(skip)
+  })
+}
+
 module.exports = {
   createCategory,
   queryCategorys,
   getCategoryById,
   updateCategoryById,
   deleteCategoryById,
+  queryProductByCategory
 };

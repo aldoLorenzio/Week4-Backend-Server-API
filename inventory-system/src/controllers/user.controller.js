@@ -4,7 +4,15 @@ const { authService, userService, tokenService } = require('../services');
 const ApiError = require('../utils/ApiError');
 
 const getUsers = catchAsync(async (req, res) => {
-  const result = await userService.getUsers();
+  const filter = {
+    name: req.query.name,
+    role: req.query.role,
+    email: req.query.email};
+  const options = {
+    take: req.query.take,
+    skip: req.query.skip }
+
+  const result = await userService.getUsers(filter, options);
 
   res.status(httpStatus.OK).json({
     status: httpStatus.OK,
@@ -19,20 +27,6 @@ const getUserById = catchAsync(async (req,res) =>{
 
   if(!result){
     throw new ApiError(httpStatus.NOT_FOUND, 'User ID not found')
-  }
-
-  res.status(httpStatus.OK).json({
-    status: httpStatus.OK,
-    message: 'Get User Success',
-    data: result
-  })
-})
-
-const getUserByEmail = catchAsync(async (req,res) =>{
-  const result = await userService.getUserByEmail(req.query.email)
-
-  if(!result){
-    throw new ApiError(httpStatus.NOT_FOUND, 'Email not found')
   }
 
   res.status(httpStatus.OK).json({
@@ -80,7 +74,7 @@ const queryProductByUser = catchAsync(async (req,res) => {
 })
 
 const queryOrderByUser = catchAsync(async (req,res) => {
-  const order = await userService.queryorderByUser(req.params.userId)
+  const order = await userService.queryOrderByUser(req.params.userId)
   if(!order) throw new ApiError(httpStatus.NOT_FOUND, 'Order not Found')
 
   res.status(httpStatus.OK).json({
@@ -90,4 +84,4 @@ const queryOrderByUser = catchAsync(async (req,res) => {
   })
 })
 
-module.exports = { getUsers, getUserByEmail, getUserById, updateUser, deleteUser, queryProductByUser, queryOrderByUser};
+module.exports = { getUsers,getUserById, updateUser, deleteUser, queryProductByUser, queryOrderByUser};

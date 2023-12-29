@@ -10,7 +10,22 @@ const createProduct = async (productBody) => {
 
 
 const queryProducts = async (filter, options) => {
-  const products = await prisma.product.findMany();
+  const {name, greater, lower} = filter
+  const {take, skip} = options
+
+  const products = await prisma.product.findMany({
+    where:{
+      name:{
+        contains: name
+      },
+      price:{
+        gte: greater && parseInt(greater),
+        lte: lower && parseInt(lower)
+      }
+    },
+      take: take && parseInt(take),
+      skip: skip && parseInt (skip),
+  });
   return products;
 };
 

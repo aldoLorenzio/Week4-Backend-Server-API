@@ -18,8 +18,27 @@ const getUserByEmail = async (email) => {
   });
 };
 
-const getUsers = async () => {
-  return prisma.user.findMany();
+const getUsers = async (filters, options) => {
+  const {name,role,email} = filters
+  const {take, skip} = options
+
+  return prisma.user.findMany({
+    where:{
+      name:{
+        contains: name,
+      },
+    role:{
+      contains: role
+    },
+    email:{
+      contains:email
+    }},
+      take: take && parseInt(take),
+      skip: skip && parseInt(skip),
+    orderBy:{
+      name: 'asc'
+    }
+  });
 };
 
 const getUserById = async(userId) => {
@@ -53,7 +72,7 @@ const deleteUserById = async(userId) =>{
 const queryProductByUser = async (userId) =>{
   const queryProduct = await prisma.user.findMany({
     where: {id : userId},
-    include: {products: true}
+    include: {products: true},
   })
 
   return queryProduct

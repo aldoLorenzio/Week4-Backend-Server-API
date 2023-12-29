@@ -42,7 +42,12 @@ const createOrderItem = async (orderItemBody) => {
 
 
 const queryOrderItems = async (filter, options) => {
-  const orderItems = await prisma.orderItem.findMany();
+  const {take, skip} = !options
+
+  const orderItems = await prisma.orderItem.findMany({
+      take: take && parseInt(take),
+      skip: skip && parseInt (skip),
+  });
   return orderItems;
 };
 

@@ -14,8 +14,15 @@ const objectId = (value, helpers) => {
     }
     return value;
   };
+
+  const notAdmin = (value, helpers) => {
+    if(value.toLowerCase().match('admin')){
+      return helpers.message(`role can't be "admin"`)
+    }
+  }
   
   module.exports = {
     objectId,
     password,
+    notAdmin
   };

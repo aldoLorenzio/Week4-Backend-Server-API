@@ -15,7 +15,20 @@ const createOrder = async (orderBody) => {
 }
 
 const queryOrders = async (filter, options) => {
-  const orders = await prisma.order.findMany();
+  const {name} = filter
+  const {take, skip} = options
+
+  const orders = await prisma.order.findMany({
+    where:{
+      customerName:{
+        contains: name
+      }},
+      take: take && parseInt(take),
+      skip: skip && parseInt (skip),
+    orderBy:{
+      customerName: 'asc'
+    }
+  });
   return orders;
 };
 

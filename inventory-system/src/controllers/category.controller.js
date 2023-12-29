@@ -14,7 +14,12 @@ const createCategory = catchAsync(async (req, res) => {
 });
 
 const getCategorys = catchAsync(async (req, res) => {
-  const result = await categoryService.queryCategorys();
+  const filter = {category: req.query.category};
+  const options = {
+    take: req.query.take,
+    skip: req.query.skip }
+
+  const result = await categoryService.queryCategorys(filter,options);
   
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,
@@ -55,6 +60,16 @@ const deleteCategory = catchAsync(async (req, res) => {
     data: null
   });
 });
+
+// const queryProductByCategory = catchAsync(async (req,res) =>{
+//   const filter = {products: category};
+//   const options = {
+//     take: take,
+//     skip: skip
+//   }
+
+//   await categoryService.queryProductByCategory(filter, options)
+// })
 
 module.exports = {
   createCategory,
