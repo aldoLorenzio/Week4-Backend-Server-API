@@ -4,8 +4,9 @@ const ApiError = require('../utils/ApiError');
 
 const createProduct = async (productBody) => {
   return prisma.product.create({
-    data: productBody,
+    data: productBody
   });
+
 };
 
 const queryProducts = async (filter, options) => {

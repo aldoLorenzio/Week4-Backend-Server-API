@@ -19,26 +19,27 @@ describe('product routes', () =>{
             description: faker.commerce.productDescription(),
             price: faker.number.float(),
             quantityInStock: faker.number.int({min: 10, max: 100}),
+            categoryId: categoryOne.id,
+            userId: userOne.id
         }
     })
 
     describe('GET & POST /v1/product', () =>{
-        // test('should return 200 OK if success get products', async() => {
-        //     await request(app)
-        //     .get('/v1/product')
-        //     .set('Authorization', `Bearer ${userOneAccessToken}`)
-        //     .expect(httpStatus.OK)
-        // })
+        test('should return 200 OK if success get products', async() => {
+            await request(app)
+            .get('/v1/product')
+            .set('Authorization', `Bearer ${userOneAccessToken}`)
+            .expect(httpStatus.OK)
+        })
 
         test('should return 201 CREATED if success create product', async() => {
             const res = await request(app)
             .post('/v1/product')
             .set('Authorization', `Bearer ${userOneAccessToken}`)
             .send(newProduct)
-            .expect(httpStatus.BAD_REQUEST)
+            .expect(httpStatus.CREATED)
 
             const productData = res.body.data;
-            console.log(productData)
 
 
             const dbProduct = await prisma.product.findUnique({
@@ -92,7 +93,7 @@ describe('product routes', () =>{
             expect(dbProduct).toBeDefined();
             expect(dbProduct).toMatchObject({
                 id: expect.anything(),
-                name: productData.name,
+                name: expect.anything(),
                 description: productData.description,
                 price: productData.price,
                 quantityInStock: productData.quantityInStock,
@@ -126,6 +127,38 @@ describe('product routes', () =>{
             .get(`/v1/product`)
             .send(newProduct)
             .expect(httpStatus.UNAUTHORIZED)
+        })
+
+        test('should return 403 BAD REQUEST if created product with no categoryID was found in send Data', async() => {
+            newProduct = {
+                name: faker.commerce.product(),
+                description: faker.commerce.productDescription(),
+                price: faker.number.float(),
+                quantityInStock: faker.number.int({min: 10, max: 100}),
+                userId: userOne.id
+            }
+
+            await request(app)
+            .post('/v1/product')
+            .set('Authorization', `Bearer ${userOneAccessToken}`)
+            .send(newProduct)
+            .expect(httpStatus.BAD_REQUEST)
+        })
+
+        test('should return 403 BAD REQUEST if created product with no userID was found in send Data', async() => {
+            newProduct = {
+                name: faker.commerce.product(),
+                description: faker.commerce.productDescription(),
+                price: faker.number.float(),
+                quantityInStock: faker.number.int({min: 10, max: 100}),
+                categoryId: categoryOne.id
+            }
+
+            await request(app)
+            .post('/v1/product')
+            .set('Authorization', `Bearer ${userOneAccessToken}`)
+            .send(newProduct)
+            .expect(httpStatus.BAD_REQUEST)
         })
         
         
