@@ -1,10 +1,10 @@
 const express = require('express');
 const authRoute = require('./auth.route');
-const userRoute = require('./user.route')
+const userRoute = require('./user.route');
 const categoryRoute = require('./category.route');
 const productRoute = require('./product.route');
-const orderItemRoute = require('./orderItem.route')
-const orderRoute = require('./order.route')
+const orderItemRoute = require('./orderItem.route');
+const orderRoute = require('./order.route');
 
 const router = express.Router();
 
@@ -32,7 +32,7 @@ const defaultRoutes = [
   {
     path: '/order',
     route: orderRoute,
-  }
+  },
 ];
 
 defaultRoutes.forEach((route) => {

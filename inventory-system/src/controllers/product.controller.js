@@ -4,12 +4,12 @@ const catchAsync = require('../utils/catchAsync');
 const { productService } = require('../services');
 
 const createProduct = catchAsync(async (req, res) => {
-  const product = await productService.createProduct(req.body)
+  const product = await productService.createProduct(req.body);
 
   res.status(httpStatus.CREATED).send({
     status: httpStatus.CREATED,
-    message: "Create Product Success",
-    data: product
+    message: 'Create Product Success',
+    data: product,
   });
 });
 
@@ -17,17 +17,19 @@ const getProducts = catchAsync(async (req, res) => {
   const filter = {
     name: req.query.name,
     greater: req.query.greater,
-    lower: req.query.lower};
+    lower: req.query.lower,
+  };
   const options = {
     take: req.query.take,
-    skip: req.query.skip}
+    skip: req.query.skip,
+  };
 
-  const result = await productService.queryProducts(filter,options);
-  
+  const result = await productService.queryProducts(filter, options);
+
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,
-    message: "Get Products Success",
-    data: result
+    message: 'Get Products Success',
+    data: result,
   });
 });
 
@@ -36,31 +38,31 @@ const getProduct = catchAsync(async (req, res) => {
   if (!product) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Product not found');
   }
-  
+
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,
-    message: "Get Product Success",
-    data: product
+    message: 'Get Product Success',
+    data: product,
   });
 });
 
 const updateProduct = catchAsync(async (req, res) => {
   const product = await productService.updateProductById(req.params.productId, req.body);
-  
+
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,
-    message: "Update Product Success",
-    data: product
+    message: 'Update Product Success',
+    data: product,
   });
 });
 
 const deleteProduct = catchAsync(async (req, res) => {
   await productService.deleteProductById(req.params.productId);
-  
+
   res.status(httpStatus.OK).send({
     status: httpStatus.OK,
-    message: "Delete Product Success",
-    data: null
+    message: 'Delete Product Success',
+    data: null,
   });
 });
 

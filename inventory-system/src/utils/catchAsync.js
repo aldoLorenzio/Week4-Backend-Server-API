@@ -1,11 +1,11 @@
-//Tujuan catchAsync ini yg aku tangkep tuh gini:
+// Tujuan catchAsync ini yg aku tangkep tuh gini:
 /**
  * try{
  * fn(req,res)
  * }catch(error){
  *  next(error)
  * }
- * 
+ *
  */
 
 // jadi klo misal kondisi try di res ga dapet nanti masuk param next ke catch(error)

@@ -6,15 +6,15 @@ const createUser = {
     name: Joi.string().required(),
     pasword: Joi.string().required(password),
     email: Joi.string().required(),
-    role: Joi.string().custom(notAdmin)
+    role: Joi.string().required(),
   }),
 };
 
-const getUserByEmail ={
+const getUserByEmail = {
   query: Joi.object().keys({
-    email: Joi.string().required().email()
-  })
-}
+    email: Joi.string().required().email(),
+  }),
+};
 
 const getUser = {
   params: Joi.object().keys({
@@ -30,7 +30,7 @@ const updateUser = {
     .keys({
       name: Joi.string(),
       password: Joi.string().custom(password),
-      email: Joi.string()
+      email: Joi.string(),
     })
     .min(1),
 };

@@ -7,7 +7,6 @@ const verifyCallback = (req, resolve, reject) => async (err, user, info) => {
     return reject(new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate'));
   }
   req.user = user;
-
   resolve();
 };
 
@@ -19,22 +18,21 @@ const auth = () => async (req, res, next) => {
     .catch((err) => next(err));
 };
 
-const authAdmin = () => async (req,res,next) => {
-  return new Promise((resolve, reject) =>{
-    passport.authenticate('jwt', {session: false}, verifyCallback(req, resolve, reject))(req,res,next);
+const authAdmin = () => async (req, res, next) => {
+  return new Promise((resolve, reject) => {
+    passport.authenticate('jwt', { session: false }, verifyCallback(req, resolve, reject))(req, res, next);
   })
-  .then(() => {
-    const user = req.user
-    if(user.role === 'admin'){
-      next()
-    }else{
-      throw new ApiError(httpStatus.FORBIDDEN, "This role doesn't has access")
-    }
-  })
-  .catch((err) => next(err))
-}
+    .then(() => {
+      if (req.user.role === 'admin') {
+        next();
+      } else {
+        throw new ApiError(httpStatus.FORBIDDEN, "This role doesn't has access");
+      }
+    })
+    .catch((err) => next(err));
+};
 
 module.exports = {
   auth,
-  authAdmin
-}
+  authAdmin,
+};

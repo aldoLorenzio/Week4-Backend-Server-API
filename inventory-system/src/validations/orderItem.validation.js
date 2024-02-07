@@ -6,7 +6,7 @@ const createOrderItem = {
     orderId: Joi.string().required(),
     productId: Joi.string().required(),
     quantity: Joi.number().required(),
-    unitPrice: Joi.number().required()
+    unitPrice: Joi.number().required(),
   }),
 };
 
@@ -22,10 +22,10 @@ const updateOrderItem = {
   }),
   body: Joi.object()
     .keys({
-        orderId: Joi.string(),
-        productId: Joi.string(),
-        quantity: Joi.number(),
-        unitPrice: Joi.number()
+      orderId: Joi.string(),
+      productId: Joi.string(),
+      quantity: Joi.number(),
+      unitPrice: Joi.number(),
     })
     .min(1),
 };

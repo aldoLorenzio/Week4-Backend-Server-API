@@ -7,8 +7,8 @@ const createProduct = {
     description: Joi.string().required(),
     price: Joi.number().required(),
     quantityInStock: Joi.number().required(),
-    categoryId : Joi.string().custom(objectId).required(),
-    userId : Joi.string().custom(objectId).required()
+    categoryId: Joi.string().custom(objectId).required(),
+    userId: Joi.string().custom(objectId).required(),
   }),
 };
 
@@ -30,7 +30,6 @@ const updateProduct = {
       quantityInStock: Joi.number(),
       categoryId: Joi.string().custom(objectId),
       userId: Joi.string().custom(objectId),
-
     })
     .min(1),
 };

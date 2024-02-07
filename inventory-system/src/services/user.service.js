@@ -1,8 +1,6 @@
 // const httpStatus = require('http-status');
 const bcrypt = require('bcryptjs');
-const prisma = require('../../prisma/client');
-const ApiError = require('../utils/ApiError');
-const httpStatus = require('http-status');
+const prisma = require('../../prisma');
 
 const createUser = async (userBody) => {
   userBody.password = bcrypt.hashSync(userBody.password, 8);
@@ -14,78 +12,80 @@ const createUser = async (userBody) => {
 
 const getUserByEmail = async (email) => {
   return prisma.user.findUnique({
-    where: {email: email },
+    where: { email },
   });
 };
 
 const getUsers = async (filters, options) => {
-  const {name,role,email} = filters
-  const {take, skip} = options
+  const { name, role, email } = filters;
+  const { take, skip } = options;
 
   return prisma.user.findMany({
-    where:{
-      name:{
+    where: {
+      name: {
         contains: name,
       },
-    role:{
-      contains: role
+      role: {
+        contains: role,
+      },
+      email: {
+        contains: email,
+      },
     },
-    email:{
-      contains:email
-    }},
-      take: take && parseInt(take),
-      skip: skip && parseInt(skip),
-    orderBy:{
-      name: 'asc'
-    }
+    take: take && parseInt(take),
+    skip: skip && parseInt(skip),
+    orderBy: {
+      name: 'asc',
+    },
   });
 };
 
-const getUserById = async(userId) => {
+const getUserById = async (userId) => {
   const user = await prisma.user.findUnique({
-    where:{ id: userId }
-  })
+    where: { id: userId },
+  });
 
-  return user
-}
+  return user;
+};
 
 const updateUserById = async (userId, userBody) => {
-
-  userBody.password = bcrypt.hashSync(userBody.password, 8);
-
+  if(userBody.password){
+    userBody.password = bcrypt.hashSync(userBody.password, 8);
+  }
+  
   const updateUser = await prisma.user.update({
-      where: {
-          id: userId,
-      },
-      data: userBody
-  })
+    where: {
+      id: userId,
+    },
+    data: userBody,
+  });
 
   return updateUser;
-}
+};
 
-const deleteUserById = async(userId) =>{
+const deleteUserById = async (userId) => {
   return prisma.user.delete({
-    where: {id: userId}
-  })
-}
+    where: { id: userId },
+  });
+};
 
-const queryProductByUser = async (userId) =>{
+const queryProductByUser = async (userId) => {
   const queryProduct = await prisma.user.findMany({
-    where: {id : userId},
-    include: {products: true},
-  })
+    where: { id: userId },
+    include: { products: true },
+  });
 
-  return queryProduct
-}
+  return queryProduct;
+};
 
 const queryOrderByUser = async (userId) => {
   const queryOrder = await prisma.user.findMany({
-    where:{id: userId},
-    include: {orders: true}
-  })
+    where: { id: userId },
+    include: { orders: true },
+  });
 
-  return queryOrder
-}
+  return queryOrder;
+};
 
 module.exports = {
   createUser,
@@ -95,5 +95,5 @@ module.exports = {
   updateUserById,
   deleteUserById,
   queryProductByUser,
-  queryOrderByUser
+  queryOrderByUser,
 };

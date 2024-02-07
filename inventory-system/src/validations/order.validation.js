@@ -6,7 +6,7 @@ const createOrder = {
     date: Joi.date().required(),
     customerName: Joi.string().required(),
     customerEmail: Joi.string().required(),
-    userId: Joi.string().required()
+    userId: Joi.string().required(),
   }),
 };
 
@@ -22,9 +22,9 @@ const updateOrder = {
   }),
   body: Joi.object()
     .keys({
-        date: Joi.date(),
-        customerName: Joi.string(),
-        customerEmail: Joi.number(),
+      date: Joi.date(),
+      customerName: Joi.string(),
+      customerEmail: Joi.number(),
     })
     .min(1),
 };
