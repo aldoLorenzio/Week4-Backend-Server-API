@@ -12,7 +12,7 @@ router
   .get(authAdmin(), orderitemController.getOrderItems);
 
 router
-  .route('/:orderitemId')
+  .route('/:orderItemId')
   .get(authAdmin(), validate(orderitemValidation.getOrderItem), orderitemController.getOrderItem)
   .patch(authAdmin(), validate(orderitemValidation.updateOrderItem), orderitemController.updateOrderItem)
   .delete(authAdmin(), validate(orderitemValidation.deleteOrderItem), orderitemController.deleteOrderItem);

@@ -1,6 +1,8 @@
 const httpStatus = require('http-status');
 const prisma = require('../../prisma');
 const ApiError = require('../utils/ApiError');
+const order = require('../services/order.service')
+const product = require('../services/product.service')
 
 const createOrderItem = async (orderItemBody) => {
   // Get data orderId and productId
@@ -62,21 +64,27 @@ const getOrderItemById = async (id) => {
   });
 };
 
-const updateOrderItemById = async (orderItemId, updateBody) => {
-  const orderItem = await getOrderItemById(orderItemId);
-  if (!orderItem) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'OrderItem not found');
-  }
-  user;
-  const updateOrderItem = await prisma.orderItem.update({
-    where: {
-      id: orderItemId,
-    },
-    data: updateBody,
-  });
+const updateOrderItemById = async (orderItemId, updateBody, products, orders) => {
 
-  return updateOrderItem;
-};
+  //  const orderItem = await prisma.orderItem.findUnique({
+  //   where:{ id: orderItemId}
+  //  });
+  
+  //  const orderId = await order.getOrderById(orders)
+  //  const productId = await product.getProductById(products)
+
+  //  if(!orderId) throw new ApiError(httpStatus.NOT_FOUND, 'OrderId Not found')
+  //  if(!productId) throw new ApiError(httpStatus.NOT_FOUND, 'ProductId Not found')
+  //  if(!orderItem) throw new ApiError(httpStatus.NOT_FOUND, 'OrderItemId not found')
+
+   return prisma.orderItem.update({
+    where:{
+      id: orderItemId
+    },
+    data: updateBody
+   })
+
+  };
 
 const deleteOrderItemById = async (orderItemId) => {
   const orderItem = await getOrderItemById(orderItemId);

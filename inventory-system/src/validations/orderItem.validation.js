@@ -12,13 +12,13 @@ const createOrderItem = {
 
 const getOrderItem = {
   params: Joi.object().keys({
-    orderitemId: Joi.string().custom(objectId),
+    orderItemId: Joi.string().custom(objectId),
   }),
 };
 
 const updateOrderItem = {
   params: Joi.object().keys({
-    orderitemId: Joi.required().custom(objectId),
+    orderItemId: Joi.required().custom(objectId),
   }),
   body: Joi.object()
     .keys({
@@ -32,7 +32,7 @@ const updateOrderItem = {
 
 const deleteOrderItem = {
   params: Joi.object().keys({
-    orderitemId: Joi.string().custom(objectId),
+    orderItemId: Joi.string().custom(objectId),
   }),
 };
 

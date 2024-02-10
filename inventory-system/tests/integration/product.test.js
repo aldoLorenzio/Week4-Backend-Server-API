@@ -14,6 +14,7 @@ describe('product routes', () =>{
     beforeEach(async () => {
         await insertUsers([admin, userOne])
         await insertCategory([categoryOne])
+        await insertProducts([productOne])
         newProduct = {
             name: faker.commerce.product(),
             description: faker.commerce.productDescription(),
@@ -63,17 +64,13 @@ describe('product routes', () =>{
 
     describe('/v1/product/:productId', () => {
         test('should return 200 OK, if success get products by productId', async() => {
-            await insertProducts([productOne])
-
             await request(app)
             .get(`/v1/product/${productOne.id}`)
             .set('Authorization', `Bearer ${userOneAccessToken}`)
             .expect(httpStatus.OK)
         })
 
-        test('Should return 200 and success update products by productId', async () => {
-            await insertCategory([categoryOne])
-            await insertProducts([productOne])
+        test('Should return 200 and success update products by productId', async () => {    
             newProduct = {
                 name: 'testUpdate'
             }
@@ -105,8 +102,7 @@ describe('product routes', () =>{
           });
 
           test('should return 200 OK if success delete products by productId', async() =>{
-            await insertProducts([productOne])
-
+            
             await request(app)
             .delete(`/v1/product/${productOne.id}`)
             .set('Authorization', `Bearer ${adminAccessToken}`)

@@ -43,7 +43,9 @@ const getOrderById = async (id) => {
 
 const updateOrderById = async (id, updateBody) => {
   const order = await prisma.order.findUnique({
-    where: {id}
+    where: {
+      id
+    }
   })
 
   if(!order) throw new ApiError(httpStatus.NOT_FOUND, 'OrderId not found')
@@ -53,26 +55,6 @@ const updateOrderById = async (id, updateBody) => {
     data: updateBody
   })
   
-  
-  
-  // const orderUserId = await prisma.user.findUnique({
-  //   where: { id: orderBody.userId },
-  // });
-
-  // if (!orderUserId) throw new ApiError(httpStatus.NOT_FOUND, 'User Id not found');
-  // const order = await getOrderById(orderBody);
-  // if (!order) {
-  //   throw new ApiError(httpStatus.NOT_FOUND, 'Order Id not found');
-  // }
-  // user;
-  // const updateOrder = await prisma.order.update({
-  //   where: {
-  //     id: orderBody.id,
-  //   },
-  //   data: updateBody,
-  // });
-
-  // return updateOrder;
 };
 
 const deleteOrderById = async (orderId) => {

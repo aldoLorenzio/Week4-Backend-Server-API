@@ -12,7 +12,7 @@ const register = catchAsync(async (req, res) => {
 
   const userCreated = await userService.createUser(req.body);
   const tokens = await tokenService.generateAuthTokens(userCreated);
-  res.status(httpStatus.CREATED).send({ userCreated, tokens });
+  res.status(httpStatus.CREATED).json({ userCreated, tokens });
 });
 
 const login = catchAsync(async (req, res) => {

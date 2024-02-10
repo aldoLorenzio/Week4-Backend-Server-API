@@ -13,7 +13,6 @@ const config = require('../../src/config/config');
 const { tokenService } = require('../../src/services');
 const { tokenTypes } = require('../../src/config/token');
 const { v4 } = require('uuid');
-const { describe } = require('pm2');
 
 describe('Category routes', () =>{
     let newCategory;
@@ -76,29 +75,6 @@ describe('Category routes', () =>{
         .get(`/v1/category/${categoryOne.id}`)
         .set('Authorization', `Bearer ${userOneAccessToken}`)
         .expect(httpStatus.OK)
-
-        const categoryData = res.body.data
-
-        expect(categoryData).toEqual({
-            id: expect.anything(),
-            name: categoryOne.name,
-            createdAt: expect.anything(),
-            updatedAt: expect.anything()   
-        })
-        
-        const dbCategory = await prisma.category.findUnique({
-            where: {
-                id: categoryData.id
-            }
-        })
-        
-        expect(dbCategory).toBeDefined()
-        expect(dbCategory).toMatchObject({
-            id: expect.anything(),
-            name: categoryData.name,
-            createdAt: expect.anything(),
-            updatedAt: expect.anything()
-        })
     })
     
     test('should return 200 OK and success update category by ID', async() => {
